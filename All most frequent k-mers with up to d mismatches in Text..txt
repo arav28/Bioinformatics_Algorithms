@@ -1,0 +1,90 @@
+import itertools
+Base = ['C','G','A','T']
+genome = 'TAGCG'
+k = 2
+d = 1
+
+
+#comparing every item in Allpossibilities to the passed Kmer (if h_dis <=d) then append to result
+def permutation(kmer):
+    return_list=[]
+    Allpossibilities = [''.join(item) for item in itertools.product(Base,repeat = k)]
+    for item in Allpossibilities:
+        if(approx(kmer,item)):
+            return_list.append(item)
+    return return_list
+
+#if hamming distance is less than or equal to d
+
+def approx(kmer,item):
+    count=0
+    for i in range(len(item)):
+        if kmer[i]!=item[i]:
+            count+=1
+    if count<=d:
+        return True
+    else:
+        return False
+
+
+
+
+Final_list = []
+
+for i in range(len(genome)-k+1):
+    kmer = genome[i:i+k]
+    Final_list.append(permutation(kmer))
+
+
+Final_list = list(itertools.chain.from_iterable(Final_list))
+
+freqD = {}
+
+for item in Final_list:
+    if item in freqD:
+        freqD[item]+=1
+    else:
+        freqD[item]=0
+
+print(freqD)
+
+AllStrings=[]
+
+for key in freqD:
+   if freqD[key] == max(freqD.values()):
+       AllStrings.append(key)
+
+print(AllStrings)
+
+
+# Let the Genome be:- 
+# AAGAG
+
+# 3-mers of this will be:-
+
+# [AAG, AGA, GAG]
+
+# Now, say that hamming distance is 1 i.e d = 1, then all possible neighbours of the above will be as under:-
+
+# AAG -> [AAG, CAG, GAG, TAG, ACG, AGG, ATG, AAA, AAC, AAT]         Toggle letter1 first and generate all permutations. Then toggle letter2. Then letter3. Only one letter must be toggled at a time, since d = 1
+
+# AGA -> [AGA, CGA, GGA, TGA, AAA, ACA, ATA, AGC, AGG, AGT]
+
+# GAG -> [GAG, AAG, CAG, TAG, GCG, GGG, GTG, GAA, GAC, GAT]
+
+# Now, prepare a long clubbed list of all of the above lists:-
+
+# Final_list = [AAG, CAG, GAG, TAG, ACG, AGG, ATG, AAA, AAC, AAT, AGA, CGA, GGA, TGA, AAA, ACA, ATA, AGC, AGG, AGT, GAG, AAG, CAG, TAG, GCG, GGG, GTG, GAA, GAC, GAT]
+
+# Then find the counts of each element in the above Final_list and prepare a python dictionary/java hashmap/c# dictionary, whatever :-
+
+# dict = {AAG : 2, CAG : 2, GAG : 2, TAG : 2, ACG : 1,  AGG : 2,  ATG : 1, .... GAT : 1 }
+
+# Now, loop over this dictionary and find the maximum count, which most probably comes out to be 2. I haven't counted.
+# say that, maximum count in dict is 2,
+# maximum = 2
+
+# Now, again loop over this dictionary and print all patterns that have count 2 i.e max count. This is your answer:-
+# So,
+# AAG CAG GAG TAG AGG.... is your answer. 
+       

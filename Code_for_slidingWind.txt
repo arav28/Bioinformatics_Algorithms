@@ -1,0 +1,26 @@
+genome = 'CGGACTCGACAGATGTGAAGAACGACAATGTGAAGACTCGACACGACAGAGTGAAGAGAAGAGGAAACATTGTAA'
+k = 5 
+l = 50  
+t = 4
+clumps=[]
+
+def sequence(gnome,k):
+    freqD={}
+    for i in range (len(gnome)-k+1):
+        key = gnome[i:i+k]
+        if key in freqD:
+            freqD[key]+=1 
+        else:
+            freqD[key]=1 
+            
+    return freqD
+
+for i in range (len(genome)-l):
+    text = genome[i:i+l]
+    freqmap = sequence(text,5)
+    for key in freqmap:
+        if freqmap[key]>=t:
+            if key not in clumps:
+               clumps.append(key)
+            
+print(clumps)

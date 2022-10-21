@@ -1,0 +1,20 @@
+pattern = 'AAAAA'
+genome = 'AACAAGCTGATAAACATTTAAAGAG'
+res = []
+
+def checkValidity(input1,pattern,count):
+    for i in range(len(pattern)):
+        if input1[i]!=pattern[i]:
+            count+=1
+    return count
+
+
+for i in range(len(genome)-len(pattern)+1):
+    count=0
+    input1=genome[i:i+len(pattern)]
+    val = checkValidity(input1,pattern,count)
+    
+    if val<=2:
+        res.append(i)
+        
+print(len(res))
